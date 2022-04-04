@@ -1,0 +1,125 @@
+---
+title: "Embryo Script"
+author: "Regan Honeycutt"
+date: "2/15/2022"
+output: html_document
+---
+
+```{R Data Organization}
+clutch_5 <- read.csv("./Embryo Survival_Clutch 5.csv")
+clutch_6 <- read.csv("./Embryo Survival_Clutch 6.csv")
+clutch_7 <- read.csv("./Embryo Survival_Clutch 7.csv")
+
+clutch_5[ , 9:93] <- NULL
+clutch_6[ , 9:13] <- NULL
+clutch_7[ , 9:13] <- NULL
+
+row.names(clutch_5[ , 1])
+colnames(clutch_5[ 1, ])
+row.names(clutch_6[ , 1])
+colnames(clutch_6[ 1, ])
+row.names(clutch_7[ , 1])
+colnames(clutch_7[ 1, ])
+
+colnames(clutch_5) <- c("Treatment", "Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7")
+colnames(clutch_6) <- c("Treatment", "Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7")
+colnames(clutch_7) <- c("Treatment", "Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7")
+
+
+#Combined Data
+embryo <- read.csv("./Embryo Survival.csv")
+embryo[ , 11:99] <- NULL
+embryo[ , 11:20] <- NULL
+colnames(embryo) <- c("id", "clutch", "treatment", "day_1", "day_2", "day_3", "day_4", "day_5", "day_6", "day_7")
+
+#trial for ggplot2
+
+gg_embryo <- read.csv("./embryo_ggplot2.csv")
+gg_embryo[ , 4:7] <- NULL
+
+#Re-organized data #3
+total_embryo <- read.csv("./total_embryo.csv")
+
+```
+
+```{R Linear Regression}
+
+install.packages("ggplot2")      
+install.packages("gridExtra")     
+install.packages("scatterplot3d") 
+install.packages("MASS")           
+library(ggplot2)
+library(gridExtra)
+library(scatterplot3d)
+library(MASS)
+
+embryo$treatment <- factor(embryo$treatment, levels = c('control', '4ppt', '6ppt'))
+
+#gives blank ggplot
+ggplot(data = embryo, aes(x = treatment, y = day_7))
+
+# a boxplot
+embryo_glm <- glm(day_7 ~ treatment, data = embryo, family = "poisson")
+summary(embryo_glm)
+#psuedo r2
+
+
+
+
+#ALSO REGAN READ THIS: USE THE INFO FROM UNIVARIATE MODELING TO GRAPH THE GLM HE USED LM BUT WE CAN FAKE IT
+
+
+
+total_embryo <-  read.csv("./total_embryo.csv")
+xrange = range(total_embryo$Time)
+
+embryo_time_glm <- glm(population ~ Time + treatment + Time:treatment, data = total_embryo, family = "poisson")
+
+summary(embryo_time_glm)
+car::Anova(embryo_time_glm)
+plot(embryo_time_glm)
+
+
+plot(population ~ Time + treatment, data = total_embryo, type = "n", xlab= "Time", ylab = "Population Size", xlim = range(total_embryo$Time), ylim = range(total_embryo$population))
+
+#Control
+points(population ~ Time, data = total_embryo, subset = treatment == "control",
+       pch = 16, col = "skyblue4")
+xrange = range(total_embryo$Time[total_embryo$treatment == "control"])
+lines(xrange,
+      predict(embryo_time_glm,
+              newdata = data.frame(Time = range(total_embryo$population), treatment =
+              "control")), col ="skyblue4",
+              lty = 1)
+
+#4ppt
+points(population ~ Time, data = total_embryo, subset = treatment == "4ppt",
+       pch = 21, col = "orange2")
+xrange = range(total_embryo$Time[total_embryo$treatment ==
+                                   "4ppt"])
+lines(xrange,
+      predict(embryo_time_glm,
+              newdata = data.frame(Time = range(total_embryo$population), treatment =
+              "4ppt")), col = "orange2", lty = 1)
+
+#6ppt
+points(population ~ Time, data = total_embryo, subset = treatment == "6ppt",
+       pch = 20, col = "red 2")
+xrange = range(total_embryo$Time[total_embryo$treatment ==
+                                   "6ppt"])
+lines(xrange,
+      predict(embryo_time_glm,
+              newdata = data.frame(Time = range(total_embryo$population), treatment =
+              "6ppt")), col = "red 2", lty = 1)
+
+#legend
+legend('left', c('Control', '4ppt', '6ppt'), cex = .7, col = c('skyblue4', 'orange2', 'red 2'), 
+       pch = c(16, 21, 20), lty = c(1, 1, 1), bty = 'n')
+
+
+
+```
+
+
+
+
