@@ -1,4 +1,4 @@
-PROJECT DESCRIPTION
+#Project Description
 
 The objective of this project is to statistically analyze and model the effect of elevated salinity on survival of southern toad embryos. The data for this project were collected during the summer of 2021. Toads were collected during amplexus, and oviposition occurred in the lab. After fertilization could be confirmed, the embryos were randomly assigned a treatment (control, 4ppt salinity, or 6ppt salinity) and placed in populations of 20 (for each treatment N=600). The decrease of population size for each population was recorded for a 7 day period. 
 
