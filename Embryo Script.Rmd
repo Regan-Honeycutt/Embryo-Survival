@@ -35,40 +35,38 @@ plot(embryo_time_glm)
 plot(population ~ Time , data = total_embryo, type = "n", xlab= "Time (Days)", ylab = "Population Size", xlim = range(total_embryo$Time), ylim = range(total_embryo$population))
 
 #Control points and regression line
-points(population ~ Time, data = total_embryo, subset = treatment == "control",
-       pch = 16, col = "lightgoldenrod2")
+points(population ~ jitter(Time), data = total_embryo, subset = treatment == "control",
+       pch = 16, col = "dodgerblue2")
 xrange = range(total_embryo$Time[total_embryo$treatment == "control"])
 lines(xrange,
       predict(embryo_time_glm,
               newdata = data.frame(Time = range(total_embryo$Time), treatment =
-              "control")), col ="lightgoldenrod2",
+              "control"), type = 'response'), col ="dodgerblue2",
               lty = 1)
 
 #4ppt points and regression line
-points(population ~ Time, data = total_embryo, subset = treatment == "4ppt",
-       pch = 16, col = "sienna2")
+points(population ~ jitter(Time), data = total_embryo, subset = treatment == "4ppt",
+       pch = 16, col = "palegreen4")
 xrange = range(total_embryo$Time[total_embryo$treatment ==
                                    "4ppt"])
 lines(xrange,
       predict(embryo_time_glm,
               newdata = data.frame(Time = range(total_embryo$Time), treatment =
-              "4ppt")), col = "sienna2", lty = 1)
+              "4ppt"), type = 'response'), col = "palegreen4", lty = 1)
 
 #6ppt points and regression line
-points(population ~ Time, data = total_embryo, subset = treatment == "6ppt",
-       pch = 16, col = "orangered4")
+points(population ~ jitter(Time), data = total_embryo, subset = treatment == "6ppt",
+       pch = 16, col = "indianred3")
 xrange = range(total_embryo$Time[total_embryo$treatment ==
                                    "6ppt"])
 lines(xrange,
       predict(embryo_time_glm,
               newdata = data.frame(Time = range(total_embryo$Time), treatment =
-              "6ppt")), col = "orangered4", lty = 1)
+              "6ppt"), type = 'response'), col = "indianred3", lty = 1)
 
 #legend
-legend('left', c('Control', '4ppt', '6ppt'), cex = .7, col = c('lightgoldenrod2', 'sienna2', 'orangered4'), 
+legend('left', c('Control', '4ppt', '6ppt'), cex = .7, col = c('dodgerblue2', 'palegreen3', 'indianred3'), 
        pch = 16, lty = c(1, 1, 1), bty = 'n')
-
-
 
 ```
 ```{R Boxplot}
@@ -82,61 +80,7 @@ plot(end_glm)
 total_embryo$treatment <- factor(total_embryo$treatment, levels = c('control', '4ppt', '6ppt'))
 
 
-boxplot(population ~ treatment, data = total_embryo, subset = Time== "7", xlab = "Treatment", ylab = "Population Size", col = c('lightgoldenrod2', 'sienna2', 'orangered4'))
-
-
-
-
-
-
-
-
-```
-```{R ggplot}
-
-library(ggplot2)
-library(gridExtra)
-library(scatterplot3d)
-library(MASS)
-
-p1 <- ggplot(data = total_embryo, subset = total_embryo$Time == "7",
-             mapping = aes(x = treatment, y = population, group = 3, col(c()) +
-      geom_point() +
-      geom_smooth(method = "lm") +
-      labs(x = "Treatment", y = "Population Size")
-
-grid.arrange(p1, nrow = 1)
-
-
-#Attempt #2
-
-
-plot(1:3, 1:3, type = "n", data = total_embryo, subset = total_embryo$Time == "7",ylim = range(total_embryo$population), axes = F,
-     xlim = c(1 ,3),
-     xlab = "Treatment", ylab = "Population Size", frame.plot = T)
-points( total_embryo$population[total_embryo$treatment == "control"])
-points(total_embryo$population[total_embryo$treatment == "4ppt"])
-points(total_embryo$population[total_embryo$treatment == "6ppt"])
-axis(side = 1, at = 1:3, labels = c("Control", "4ppt", "6ppt"))
-axis(side = 2)
-
-
-
-
-
-```
-
-``` {R Old stuff that may need for examples}
-embryo$treatment <- factor(embryo$treatment, levels = c('control', '4ppt', '6ppt'))
-
-#gives blank ggplot
-ggplot(data = embryo, aes(x = treatment, y = day_7))
-
-# a boxplot
-embryo_glm <- glm(day_7 ~ treatment, data = embryo, family = "poisson")
-summary(embryo_glm)
-#psuedo r2
-
+boxplot(population ~ treatment, data = total_embryo, subset = Time== "7", xlab = "Treatment", ylab = "Population Size", col = c('dodgerblue2', 'palegreen3', 'indianred3'))
 
 
 ```
