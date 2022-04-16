@@ -15,12 +15,7 @@ total_embryo <- read.csv("./total_embryo.csv")
 
 
 
-```{R General Linear Regression}
-
-#Essentially I think just changing the colors of the regression graph, adding a boxplot of the means at t=7, labeling the x axis of regression graph, including anova data(?), and figuring out what literally the glm graphs mean.
-
-          #Boxplot created, and I like the colors used. X-axis             labeled. Also ran a glm and anova on final time point
-
+```{R General Linear Regression and Anova}
 
 
 xrange = range(total_embryo$Time)
