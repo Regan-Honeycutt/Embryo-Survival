@@ -24,6 +24,7 @@ embryo_time_glm <- glm(population ~ Time + treatment + Time:treatment, data = to
 
 summary(embryo_time_glm)
 car::Anova(embryo_time_glm)
+
 plot(embryo_time_glm)
 
 
@@ -37,7 +38,7 @@ lines(xrange,
       predict(embryo_time_glm,
               newdata = data.frame(Time = range(total_embryo$Time), treatment =
               "control"), type = 'response'), col ="dodgerblue2",
-              lty = 1)
+              lty = 1, lwd = 2)
 
 #4ppt points and regression line
 points(population ~ jitter(Time), data = total_embryo, subset = treatment == "4ppt",
@@ -47,7 +48,7 @@ xrange = range(total_embryo$Time[total_embryo$treatment ==
 lines(xrange,
       predict(embryo_time_glm,
               newdata = data.frame(Time = range(total_embryo$Time), treatment =
-              "4ppt"), type = 'response'), col = "palegreen4", lty = 1)
+              "4ppt"), type = 'response'), col = "palegreen4", lty = 1, lwd = 2)
 
 #6ppt points and regression line
 points(population ~ jitter(Time), data = total_embryo, subset = treatment == "6ppt",
@@ -57,10 +58,10 @@ xrange = range(total_embryo$Time[total_embryo$treatment ==
 lines(xrange,
       predict(embryo_time_glm,
               newdata = data.frame(Time = range(total_embryo$Time), treatment =
-              "6ppt"), type = 'response'), col = "indianred3", lty = 1)
+              "6ppt"), type = 'response'), col = "indianred3", lty = 1, lwd = 2)
 
 #legend
-legend('left', c('Control', '4ppt', '6ppt'), cex = .7, col = c('dodgerblue2', 'palegreen3', 'indianred3'), 
+legend('bottomleft', c('Control', '4ppt', '6ppt'), cex = .9, col = c('dodgerblue2', 'palegreen4', 'indianred3'), 
        pch = 16, lty = c(1, 1, 1), bty = 'n')
 
 ```
